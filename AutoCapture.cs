@@ -28,6 +28,7 @@ public class AutoCapture : IAutoTamper
 			String path = oSession.host + oSession.PathAndQuery;
 			
 			//path = path.Substring(0, path.IndexOf('?'));
+			path = path.Split('?')[0];
 			path = path
 				.Replace("/", "\\")
 				.Replace("?", "-\\")

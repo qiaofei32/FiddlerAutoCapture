@@ -31,8 +31,8 @@ public class AutoCapture : IAutoTamper
 			path = path.Split('?')[0];
 			path = path
 				.Replace("/", "\\")
-				.Replace("?", "-\\")
-				.Replace("&", "\\")
+				.Replace("?", ",")
+				.Replace("&", "-")
 				.Replace(":" , "%3A")
 				.Replace("*" , "%2A")
 				.Replace("\"", "%22")
@@ -43,6 +43,9 @@ public class AutoCapture : IAutoTamper
 			
 			while (path.Contains("\\\\"))
 				path = path.Replace("\\\\", "\\ \\");
+			
+			if (path[path.Length-1]=='\\')
+				path = path + "index.html";
 
 			string[] segments = path.Split('\\');
 			for (int j=0; j<segments.Length; j++)
@@ -57,7 +60,7 @@ public class AutoCapture : IAutoTamper
 					string tempFileName = dirName+".temp-index";
 					Win32File.Move(dirName, tempFileName);
 					Win32Directory.CreateDirectory(dirName);
-					Win32File.Move(tempFileName, dirName+"\\index");
+					Win32File.Move(tempFileName, dirName+"\\index.html");
 				}
 			
 			try {
@@ -66,7 +69,7 @@ public class AutoCapture : IAutoTamper
 			} catch(Exception e) { throw new Exception("Directory.Exists failure: " + path, e); }
 
 			if (path[path.Length-1]=='\\')
-				path = path + "index";
+				path = path + "index.html";
 
 			//String dir = Path.GetDirectoryName(path);
 			String dir = path.Substring(0, path.LastIndexOf('\\'));
